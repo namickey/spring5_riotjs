@@ -12,11 +12,14 @@
 
 <script type="riot/tag">
 <projectList>
-<button onclick="{getProjects}">プロジェクト一覧取得</button>
+<button onclick="{postProject}">プロジェクト一覧取得</button>
 <p each={items}>id:{id}, name:{name}</p>
 var self = this
 self.items = []
-getProjects(event){
+postProject(event){
+  self.getProjects()
+}
+getProjects(){
   fetch('projects')
   .then(function(response){
     return response.json()
