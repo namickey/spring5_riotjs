@@ -19,13 +19,13 @@ public class RestProjectController {
 
 	@RequestMapping(value = "/projects", method = RequestMethod.GET)
 	public List<ProjectDto> getProjectList() {
-        projectService.resist("abc");
 		return projectService.getList();
 	}
 
 	@RequestMapping(value = "/projects", method = RequestMethod.POST)
 	public ProjectDto saveProject(@RequestBody ProjectDto projectDto) {
-        projectService.resist(projectDto.getName());
+		int id = projectService.resist(projectDto);
+		projectDto.setId(id);
 		return projectDto;
 	}
 

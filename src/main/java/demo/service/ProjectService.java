@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,7 @@ public class ProjectService {
 
         List<ProjectDto> list = new ArrayList<>();
 
-        projectRepository.findAll().forEach(projectDto ->{
+        projectRepository.findAll(new Sort(Sort.Direction.DESC,"id")).forEach(projectDto ->{
             ProjectDto dto = new ProjectDto();
             BeanUtils.copyProperties(projectDto, dto);
             list.add(dto);
@@ -32,9 +33,10 @@ public class ProjectService {
     }
 
     @Transactional
-    public void resist(String projectName) {
+    public int resist(ProjectDto projectDto) {
         Project project = new Project();
-        project.setName(projectName);
+        project.setName(projectDto.getName());
         projectRepository.save(project);
+        return project.getId();
     }
 }

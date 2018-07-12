@@ -12,19 +12,32 @@
 
 <script type="riot/tag">
 <projectList>
-<button onclick="{postProject}">プロジェクト一覧取得</button>
+<input type="text" name="name" ref="name">
+<button type="button" onclick="{postProject}">登録</button>
+<p>プロジェクト一覧</p>
 <p each={items}>id:{id}, name:{name}</p>
 var self = this
 self.items = []
 postProject(event){
-  self.getProjects()
+  fetch('projects', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({name: self.refs.name.value})
+  }).then(function(response){
+    return response.json()
+  }).then(function(json){
+    //console.log(json)
+    self.getProjects()
+  })
 }
 getProjects(){
   fetch('projects')
   .then(function(response){
     return response.json()
-  })
-  .then(function(json){
+  }).then(function(json){
     self.update({items:json})
   })
 }
